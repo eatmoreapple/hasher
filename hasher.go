@@ -5,6 +5,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/base64"
+	"fmt"
 	"hash"
 	"math"
 	"strconv"
@@ -86,3 +87,17 @@ var (
 		digest:     sha1.New,
 	}
 )
+
+// Verify verifies a password against an encoded string.
+func Verify(password, encoded string) (bool, error) {
+	parts := strings.Split(encoded, "$")
+	if len(parts) != 4 {
+		return false, nil
+	}
+	algorithm := parts[0]
+	hasher := hasherLibrary[algorithm]
+	if hasher == nil {
+		return false, fmt.Errorf("unknown algorithm %q", algorithm)
+	}
+	return hasher.Verify(password, encoded)
+}
