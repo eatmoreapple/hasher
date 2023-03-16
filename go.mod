@@ -1,4 +1,4 @@
-module hasher
+module github.com/eatmoreapple/hasher
 
 go 1.20
 
